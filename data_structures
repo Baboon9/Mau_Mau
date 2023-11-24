@@ -1,0 +1,16 @@
+Cards:
+1 number 1-12 integer
+1 color 1-4 integer
+
+deck
+0-32 Cards
+
+Hands
+0-7 Cards
+
+The Cards need to have a dedicated class structure. They need a constructor. But no functions except maybe getters but as I will write it in Pyhton no getters are needed.
+
+The Deck needs a Constructor and a shuffle and restock method.
+
+There has to be Game class which acts as a manager class for the whole game.
+

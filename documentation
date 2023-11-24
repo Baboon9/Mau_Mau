@@ -1,0 +1,14 @@
+Initial entry:
+	I have stopped working on my MADN Project because it went over my head.
+	It was just too complex for a beginner Project, so I started a basic and simple one.
+	The most simple I could come up with was Mau Mau, so here I am.
+	
+	I wanted to build it up from the ground and so I thougt best would be to start with the data structures.
+
+	Mau mau has a deck of cards, 2 players with and cards, one human and one PC player. And one deck for cards that have been put down.
+
+	A deck contains cards with numbers from 2 to 10, and in order jack, queen, king, ace, as well as 4 different colors, namely cross, heart, spades, clubs.
+
+	These cards need to be mixed and sorted into the deck. These cards are 8+4*4, so 32 in total. 
+
+	The Handcards are to be handed out as 7 each player.
