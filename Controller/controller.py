@@ -3,4 +3,4 @@ class Controller:
         pass
 
     def update(self):
-        return input()
+        pass

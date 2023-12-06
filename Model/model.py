@@ -25,21 +25,10 @@ class Model:
         self.table_stack = TableStack()
         self.table_stack.placeStartingCard(self.deck)
         
-        self.game.newGame()
+        #needs to be invoked somewhere else!
+        #self.game.newGame()
         
-        #running state
-        #notify controller
-        while(self.game.game_sate==self.game.game_states[1]):
-            input = controller.update()
-            outputBuffer = ""
-                
-            
-
-
-
-
-            view.update(outputBuffer)
-            
+        print("The buisness logic class has been initialized.") 
 
 
 class TableStack:
@@ -108,7 +97,9 @@ class Game:
             return True
         else:
             return False
-
+    
+    def start(self):
+        self.game_state=self.game_states[1]
 
     #Main game loop
     def run(self):
@@ -156,12 +147,13 @@ class Game:
         print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
 
     #start a new game
-    def newGame(self):
+    def new(self):
+        print("New Game has started!")
         self.game_state = self.game_states[4]
         
         #moved to view
         #print("New Game Has started!")
-        self.run()
+        #self.run()
 
 
 

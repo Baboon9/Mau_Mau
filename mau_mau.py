@@ -4,10 +4,22 @@ import Model.model
 import Controller.controller
 
 
-console = Controller.controller.Console()
+console=View.view.Console()
 controller=Controller.controller.Controller()
 view=View.view.View(console)
 model=Model.model.Model(view, controller)
+
+model.game.start()
+
+#running state
+#notify view 
+while(model.game.game_state==model.game.game_states[1]):
+    if input() in ["exit", "quit","break","q"]:
+        break
+    #view.update("debug", "Debug message test", model.game)
+
+
+
 
 #moved to model
 class Card:
