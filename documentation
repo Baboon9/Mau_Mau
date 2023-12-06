@@ -12,3 +12,9 @@ Initial entry:
 	These cards need to be mixed and sorted into the deck. These cards are 8+4*4, so 32 in total. 
 
 	The Handcards are to be handed out as 7 each player.
+
+Second entry:
+	Okay, so the whole thing is running just fine, but it is not clean code, I want to polish it a litte by applying the MVC pattern to it and add a GUI Later.
+	It would be pretty amazing to have a networking function as well later on. But who knows.
+		To Make it more polished I need to make the folders, add the __init__.py files, put the classes in their files and untie the knot a little
+	by adding moving some functions in their appropriat modules.
