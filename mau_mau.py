@@ -17,14 +17,24 @@ model.game.start()
 turncount = 0
 while(model.game.game_state==model.game.game_states[1]):
     turncount = turncount +1
-    if input() in ["exit", "quit","break","q"]:
-        break
+    
     view.update("gameInfo", "This is the " + str(turncount) + "th turn", model.game)
     view.update("gameInfo", "There are " + str(model.game.deck.getLen()) + " Cards on the deck", model.game)
     view.update("gameInfo", "There are " + str(len(model.game.human_player.hand.getHand())) + " Cards on your Hand", model.game)
     view.update("printTopCard", None, model.game)
     view.update("printHand",None,model.game)
+    view.update("gameInfo", "\nPick a card!", model.game)
+    
 
+    input = controller.update(console)
+
+    if input in ["exit", "quit","break","q"]:
+        break
+    
+
+    if input == "":
+        pass
+    
 
 #moved to model
 class Card:
