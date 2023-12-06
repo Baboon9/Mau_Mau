@@ -1,14 +1,13 @@
 import random
-import View
-import Model
-import Controller
+import View.view
+import Model.model
+import Controller.controller
 
 
-def __init__(self):
-    self.model=Model.Model()
-    self.view=View.View()
-    self.Controller=COntroller.Controller()
-
+controller=Controller.controller.Controller()
+view=View.view.View()
+model=Model.model.Model(view, controller)
+     
 
 #moved to model
 class Card:
