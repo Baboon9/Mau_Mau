@@ -11,7 +11,21 @@ class Model:
         #make make the cards appear on the table and shuffle them
         self.deck.generate()
         self.deck.shuffle()
-
+        
+        #When we want to play a game of Mau Mau we have to have at least 2 players
+        #And then when the game starts they have to get their initial cards on their hands
+        self.human_player = Player(False)
+        self.human_player.pickInitialCards(self.deck)
+        self.computer_player = Player(True)
+        self.computer_player.pickInitialCards(self.deck)
+        
+        #When the game is initialized it needs a stack of cards on the table for placing handcards
+        #This should actually be a class on its own
+        #TODO: Make this a class on its own
+        self.table_stack = []
+        self.table_stack.append(self.deck.pickOneCard())
+        
+        self.game.newGame()
 
 class Deck:
     def __init__(self):
@@ -53,15 +67,18 @@ class Game:
         #self.deck = Deck()
         #self.deck.generateDeck()
         #self.deck.shuffle()
-        self.human_player = Player(False)
-        self.human_player.pickInitialCards(self.deck)
-        self.computer_player = Player(True)
-        self.computer_player.pickInitialCards(self.deck)
-        
-        self.table_stack = []
-        self.table_stack.append(self.deck.pickOneCard())
 
-        self.newGame()
+        #moved to model
+        #self.human_player = Player(False)
+        #self.human_player.pickInitialCards(self.deck)
+        #self.computer_player = Player(True)
+        #self.computer_player.pickInitialCards(self.deck)
+        
+        #moved to model
+        #self.table_stack = []
+        #self.table_stack.append(self.deck.pickOneCard())
+
+        #self.newGame()
 
 class Player:
     def __init__(self):
