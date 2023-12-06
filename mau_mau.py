@@ -21,6 +21,7 @@ while(model.game.game_state==model.game.game_states[1]):
     view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", model.game)
     view.update("gameInfo", "There are " + str(model.game.deck.getLen()) + " Cards on the deck", model.game)
     view.update("gameInfo", "There are " + str(len(model.game.human_player.hand.getHand())) + " Cards on your Hand", model.game)
+    view.update("gameInfo", "There are " + str(len(model.game.computer_player.hand.getHand())) + " Cards on the computer players Hand", model.game)
     view.update("printTopCard", None, model.game)
     view.update("printHand",None,model.game)
     view.update("gameInfo", "\nPick a card!\n################################", model.game)
@@ -31,8 +32,13 @@ while(model.game.game_state==model.game.game_states[1]):
     if input in ["exit", "quit","break","q"]:
         break
    
-    selectedCard = model.game.human_player.hand.getHand()[int(input)]
-    
+    try:
+        selectedCard = model.game.human_player.hand.getHand()[int(input)]
+    except:
+        print("ERROR: The selected card can not be found.")
+    finally:
+        selectedCard = model.game.human_player.hand.getHand()[0]
+
     isMatching = model.game.checkMatchingCard(selectedCard, model.table_stack)
     
     if isMatching:
@@ -41,6 +47,24 @@ while(model.game.game_state==model.game.game_states[1]):
     else:
         view.update("gameInfo","The Card is not matching!\n", model.game)
         model.human_player.pickUpACard(model.deck)
+
+    
+    computer_can_drop = False
+    for card in model.computer_player.hand.getHand():
+        if model.game.checkMatchingCard(card, model.table_stack):
+            computer_can_drop = True
+
+    if computer_can_drop:
+        model.computer_player.dropACard(card, model.table_stack)
+    else:
+        model.computer_player.hand.pickUpACard(model.deck)
+    
+    if model.human_player.hand.getLen() == 0 or model.computer_player.hand.getLen() == 0:
+        model.game.gameOver()
+
+    if model.game.game_states==model.game.game_states[4]:
+        view.update("\n\n\ngameInfo", "GAME OVER\n", model.game)
+
 
 #moved to model
 class Card:

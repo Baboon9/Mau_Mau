@@ -6,4 +6,4 @@ class Controller:
 
     def update(self, device):
         if type(device) == View.view.Console:
-            return input()
+            return str(input())

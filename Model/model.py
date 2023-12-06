@@ -76,7 +76,7 @@ class Deck:
         try:
             picked_card = self.deck.pop()
         except:
-            self.generateDeck()
+            self.generate()
             picked_card = self.deck.pop()
         finally:
             return picked_card
@@ -91,22 +91,6 @@ class Game:
         self.game_states = ["initializing", "running", "stopped", "over", "new"]
         self.game_state = self.game_states[0]
         self.deck = deck
-        #moved to Model
-        #self.deck = Deck()
-        #self.deck.generateDeck()
-        #self.deck.shuffle()
-
-        #moved to model
-        #self.human_player = Player(False)
-        #self.human_player.pickInitialCards(self.deck)
-        #self.computer_player = Player(True)
-        #self.computer_player.pickInitialCards(self.deck)
-        
-        #moved to model
-        #self.table_stack = []
-        #self.table_stack.append(self.deck.pickOneCard())
-
-        #self.newGame()
 
     #When the game is running and the turn has begun there has to be cards compared 
     #No card can be placed on the stack that does not match at least the color or the number of that given card
@@ -119,65 +103,25 @@ class Game:
     def start(self):
         self.game_state=self.game_states[1]
 
-    #Main game loop
-    def run(self):
-        self.game_state = self.game_states[1]
-        while self.game_state == "running":
-            pass 
-            #Has to be moved to view
-            #print("The top card on the table stack is:")
-            #print("\n",self.table_stack[-1].asText())
-            #print()
-            #self.human_player.printHand()
-            #print("")
-            
-            #need to be moved to controller
-            #picked_card = input("Select a card you want to put on the open table stack..")
-            
-            
-            #print()
-            #print()
-            
-
-            #Need to be reimplemented
-            #try:
-            #    if self.checkMatchingCard(self.human_player.hand[int(picked_card)]):
-            #        print("Okay, these cards do match!")
-            #        print("Removing selected Card form players Hand and putting it on the table stack..\n")
-            #        self.table_stack.append(self.human_player.hand.pop(int(picked_card)))
-            #
-            #    else:
-            #        print("No! These cards do NOT match!")
-            #        print("Select another card!! Or pass by pressing Enter")
-            #
-            #except:
-            #    self.human_player.pickUpACard(self.deck) 
-            #
-            #print("Alright, now its the computer players turn!")
-            #print("###########################################")
-            
-    
     def stop(self):
         pass
     
     #end the game and show credits
     def gameOver(self):
-        print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
+        self.game_state=self.games_tates[4]
+        #print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
 
     #start a new game
     def new(self):
         print("New Game has started!")
         self.game_state = self.game_states[4]
-        
-        #moved to view
-        #print("New Game Has started!")
-        #self.run()
-
-
 
 class Hand:
     def __init__(self):
         self.cards = []
+
+    def getLen(self):
+        return len(self.cards)
 
     def getHand(self):
         return self.cards
@@ -205,8 +149,8 @@ class Player:
     def pickUpACard(self, deck):
         self.hand.pickUpACard(deck)
 
-    def dropACard(self, card):
-        self.hand.dropACard(card)
+    def dropACard(self, card, table_stack):
+        self.hand.dropACard(card, table_stack)
 
 class Card:
     def __init__(self, color, number):
