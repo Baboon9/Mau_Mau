@@ -18,23 +18,29 @@ turncount = 0
 while(model.game.game_state==model.game.game_states[1]):
     turncount = turncount +1
     
-    view.update("gameInfo", "This is the " + str(turncount) + "th turn", model.game)
+    view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", model.game)
     view.update("gameInfo", "There are " + str(model.game.deck.getLen()) + " Cards on the deck", model.game)
     view.update("gameInfo", "There are " + str(len(model.game.human_player.hand.getHand())) + " Cards on your Hand", model.game)
     view.update("printTopCard", None, model.game)
     view.update("printHand",None,model.game)
-    view.update("gameInfo", "\nPick a card!", model.game)
+    view.update("gameInfo", "\nPick a card!\n################################", model.game)
     
 
     input = controller.update(console)
 
     if input in ["exit", "quit","break","q"]:
         break
+   
+    selectedCard = model.game.human_player.hand.getHand()[int(input)]
     
-
-    if input == "":
-        pass
+    isMatching = model.game.checkMatchingCard(selectedCard, model.table_stack)
     
+    if isMatching:
+        view.update("gameInfo","The Card is matching!", model.game)
+        model.human_player.hand.dropACard(selectedCard, model.table_stack)
+    else:
+        view.update("gameInfo","The Card is not matching!\n", model.game)
+        model.human_player.pickUpACard(model.deck)
 
 #moved to model
 class Card:

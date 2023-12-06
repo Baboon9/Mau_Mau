@@ -23,7 +23,6 @@ class Model:
         self.human_player.hand.pickInitialCards(self.deck)
         self.computer_player.hand.pickInitialCards(self.deck)
 
-        self.game = Game(self.deck, self.human_player, self.computer_player)
 
 
         #When the game is initialized it needs a stack of cards on the table for placing handcards
@@ -31,7 +30,9 @@ class Model:
         #TODO: Make this a class on its own
         self.table_stack = TableStack()
         self.table_stack.placeStartingCard(self.deck)
-        
+       
+        self.game = Game(self.deck, self.human_player, self.computer_player, self.table_stack)
+
         #needs to be invoked somewhere else!
         #self.game.newGame()
         
@@ -39,6 +40,10 @@ class Model:
 
 
 class TableStack:
+    def getLen(self):
+        return len(self.cards)
+    def getCards(self):
+        return self.cards
     def __init__(self):
         self.cards = []
     def placeStartingCard(self, deck):
@@ -79,8 +84,9 @@ class Deck:
 class Game:
     #When the game starts an instace of the game calss will be created.
     #This instace has important attributes.
-    def __init__(self, deck, human_player, computer_player):
+    def __init__(self, deck, human_player, computer_player, table_stack):
         self.human_player = human_player
+        self.table_stack = table_stack
         self.computer_player = computer_player
         self.game_states = ["initializing", "running", "stopped", "over", "new"]
         self.game_state = self.game_states[0]
@@ -104,8 +110,8 @@ class Game:
 
     #When the game is running and the turn has begun there has to be cards compared 
     #No card can be placed on the stack that does not match at least the color or the number of that given card
-    def checkMatchingCard(self, card):
-        if card.number == self.table_stack[-1].number or card.color == self.table_stack[-1].color:
+    def checkMatchingCard(self, card, table_stack):
+        if card.number == table_stack.getCards()[-1].number or card.color == table_stack.getCards()[-1].color:
             return True
         else:
             return False
@@ -180,8 +186,11 @@ class Hand:
         for i in range(0,7):
             self.pickUpACard(deck)
 
-    def dropACard(self):
-        pass
+    def dropACard(self, card, table_stack):
+        dropped_card = card 
+        dropped_card_index = self.cards.index(dropped_card)
+        self.cards.pop(dropped_card_index)
+        table_stack.getCards().append(dropped_card)
 
     def pickUpACard(self, deck):
         self.cards.append(deck.pickUpACard())
@@ -194,8 +203,10 @@ class Player:
 
 
     def pickUpACard(self, deck):
-        self.hand.pickUpACard()
+        self.hand.pickUpACard(deck)
 
+    def dropACard(self, card):
+        self.hand.dropACard(card)
 
 class Card:
     def __init__(self, color, number):

@@ -17,7 +17,7 @@ class Console:
             strbuffer = strbuffer + self.gameInfo(message)
         
         elif method == "printTopCard":
-            strbuffer = strbuffer + self.printTopCard(game.deck)
+            strbuffer = strbuffer + self.printTopCard(game.table_stack)
 
         elif method == "printDeck":
             strbuffer = strbuffer + self.printDeck(game.deck)
@@ -38,8 +38,8 @@ class Console:
     def gameInfo(self, message):
         return message
 
-    def printTopCard(self, deck):
-        return str("The top card on the deck is: \n\t\t"+deck.deck[deck.getLen()-1].asText() )
+    def printTopCard(self, table_stack):
+        return str("The top card on the table is: \n\t\t"+table_stack.getCards()[table_stack.getLen()-1].asText() )
 
 
     def printDeck(self, deck):
@@ -52,6 +52,6 @@ class Console:
             return "" 
         strbuffer = ""
         for x in hand.getHand():
-            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t\t\n" )
+            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t"+str(hand.getHand().index(x))+"\t\n" )
         return strbuffer
 
