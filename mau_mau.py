@@ -4,10 +4,10 @@ import Model.model
 import Controller.controller
 
 
+console = Controller.controller.Console()
 controller=Controller.controller.Controller()
-view=View.view.View()
+view=View.view.View(console)
 model=Model.model.Model(view, controller)
-     
 
 #moved to model
 class Card:

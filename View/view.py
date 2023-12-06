@@ -1,12 +1,25 @@
 class View:
-    def __init__(self):
-        self.console = Console()
-        self.console.debugMessage("View Class has been initialized")
-   
-    def update(self):
-        pass 
+    def __init__(self, device):
+        self.device = device 
+
+    def update(device, method, message, game):
+        device.render(method, message, game)
 
 class Console:
+    
+    def render(self, method, message, game):
+        if method == "debug":
+            self.debugMessage(message)
+            
+        if method == "printTopCard":
+            self.printTopCard(game.deck)
+
+        if method == "printDeck":
+            self.printDeck(game.deck)
+
+        if method == "printHand":
+            self.printHand(game.player.hand)
+
     def debugMessage(self, message):
         return str("DEBUG:",message)
 
