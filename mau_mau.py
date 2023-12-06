@@ -1,5 +1,16 @@
 import random
+import View
+import Model
+import Controller
 
+
+def __init__(self):
+    self.model=Model.Model()
+    self.view=View.View()
+    self.Controller=COntroller.Controller()
+
+
+#moved to model
 class Card:
     def __init__(self, color, number):
         self.color = color
@@ -40,7 +51,7 @@ class Card:
             
         return text_number + " of " + text_color
 
-
+#moved to model
 class Player:
     def __init__(self, computer):
         self.computer = computer
@@ -186,4 +197,4 @@ class Game:
         print("New Game Has started!")
         self.run()
 
-game = Game()
+

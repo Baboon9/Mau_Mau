@@ -144,3 +144,62 @@ class Hand:
         pass
 
 
+class Player:
+    def __init__(self, computer):
+        self.computer = computer
+        #self.deck = Deck()
+        #self.hand = []
+
+    def pickUpACard(self, deck):
+        self.hand.append(deck.pickOneCard())
+
+    def pickInitialCards(self, deck):
+        for i in range(0,7):
+            self.pickUpACard(deck)
+    
+    #moved to view
+    def printHand(self):
+        for x in self.hand:
+            print("Player Hand Cards: \t", x.asText() + "\t\t",  self.hand.index(x), "\t" )
+
+
+
+class Card:
+    def __init__(self, color, number):
+        self.color = color
+        self.number = number
+
+    def asText(self):
+        text_number = ""
+        if self.number < 9:
+            text_number = str(self.number + 2)
+
+        elif self.number == 11:
+            text_number = "Ace"
+
+        elif self.number == 10:
+            text_number = "King"
+
+        elif self.number == 9:
+            text_number = "Queen"
+
+        elif self.number == 8:
+            text_number = "Jack"
+
+        else:
+            print("An unexpected Error occured")
+        
+        text_color = ""
+
+        if self.color == 0:
+            text_color = "Clubs"  
+        elif self.color == 1:
+            text_color = "Spades"
+        elif self.color == 2:
+            text_color = "Hearts"
+        elif self.color == 3:
+            text_color = "Diamonds"
+        else:
+            print("An unexpected Error occured")
+            
+        return text_number + " of " + text_color
