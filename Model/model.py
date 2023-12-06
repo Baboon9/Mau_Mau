@@ -80,6 +80,61 @@ class Game:
 
         #self.newGame()
 
+    #When the game is running and the turn has begun there has to be cards compared 
+    #No card can be placed on the stack that does not match at least the color or the number of that given card
+    def checkMatchingCard(self, card):
+        if card.number == self.table_stack[-1].number or card.color == self.table_stack[-1].color:
+            return True
+        else:
+            return False
+
+
+    #Main game loop
+    def run(self):
+        self.game_state = self.game_states[1]
+        while self.game_state == "running":
+            print("The top card on the table stack is:")
+            print("\n",self.table_stack[-1].asText())
+            print()
+            self.human_player.printHand()
+            print("")
+            picked_card = input("Select a card you want to put on the open table stack..")
+            
+            
+            print()
+            print()
+            
+            try:
+                if self.checkMatchingCard(self.human_player.hand[int(picked_card)]):
+                    print("Okay, these cards do match!")
+                    print("Removing selected Card form players Hand and putting it on the table stack..\n")
+                    self.table_stack.append(self.human_player.hand.pop(int(picked_card)))
+
+                else:
+                    print("No! These cards do NOT match!")
+                    print("Select another card!! Or pass by pressing Enter")
+
+            except:
+                self.human_player.pickUpACard(self.deck) 
+
+            print("Alright, now its the computer players turn!")
+            print("###########################################")
+            
+    
+    def stop(self):
+        pass
+    
+    #end the game and show credits
+    def gameOver(self):
+        print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
+
+    #start a new game
+    def newGame(self):
+        self.game_state = self.game_states[4]
+        print("New Game Has started!")
+        self.run()
+
+
 class Player:
     def __init__(self):
         pass

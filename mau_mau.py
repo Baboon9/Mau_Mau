@@ -63,6 +63,7 @@ class Deck:
     def __init__(self):
         pass
 
+    #moved to model
     def generateDeck(self):
         self.deck = []
         for i in range (0,12):
@@ -71,14 +72,16 @@ class Deck:
         
         return self.deck
 
+    #mved to view
     def printDeck(self):
         for x in self.deck:
             print("Color: ",x.color,"Number: ",x.number)
 
-    
+    #moved to model    
     def shuffle(self):
         random.shuffle(self.deck)
 
+    #moved to model
     def pickOneCard(self):
         try:
             picked_card = self.deck.pop()
@@ -88,11 +91,12 @@ class Deck:
             picked_card = self.deck.pop()
         finally:
             return picked_card
-
+    
+    #moved to view
     def printTopCard(self):
         print("The top card on the deck is: \n\t\t", self.deck[len(self.deck)-1].asText() )
 
-
+#moved to model
 class Game:
     def __init__(self):
         self.game_states = ["initializing", "running", "stopped", "over", "new"]
@@ -110,13 +114,14 @@ class Game:
 
         self.newGame()
 
-
+    #moved to model
     def checkMatchingCard(self, card):
         if card.number == self.table_stack[-1].number or card.color == self.table_stack[-1].color:
             return True
         else:
             return False
-
+    
+    #moved to model
     def run(self):
         self.game_state = self.game_states[1]
         while self.game_state == "running":
@@ -167,13 +172,15 @@ class Game:
                 self.game_state = self.game_states[2]
                 self.gameOver()
 
-
+    #moved to model
     def stop(self):
         pass
-
+    
+    #moved to model
     def gameOver(self):
         print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
 
+    #moved to model
     def newGame(self):
         self.game_state = self.game_states[4]
         print("New Game Has started!")
