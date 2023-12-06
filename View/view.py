@@ -13,6 +13,9 @@ class Console:
         if method == "debug":
             strbuffer = strbuffer + self.debugMessage(message)
             
+        elif method == "gameInfo":
+            strbuffer = strbuffer + self.gameInfo(message)
+        
         elif method == "printTopCard":
             strbuffer = strbuffer + self.printTopCard(game.deck)
 
@@ -20,7 +23,7 @@ class Console:
             strbuffer = strbuffer + self.printDeck(game.deck)
 
         elif method == "printHand":
-            strbuffer = strbuffer + self.printHand(game.player.hand)
+            strbuffer = strbuffer + self.printHand(game.human_player.hand)
         else:
             strbuffer = strbuffer + self.debugMessage("WARNING: Wrong message identifyer")
         
@@ -32,8 +35,11 @@ class Console:
     def __init__(self):
         pass
 
+    def gameInfo(self, message):
+        return message
+
     def printTopCard(self, deck):
-        return str("The top card on the deck is: \n\t\t"+deck[len(self.deck)-1].asText() )
+        return str("The top card on the deck is: \n\t\t"+deck.deck[deck.getLen()-1].asText() )
 
 
     def printDeck(self, deck):
@@ -41,7 +47,11 @@ class Console:
             return str("Color: "+x.color+"Number: "+x.number)
     
     def printHand(self, hand):
-        for x in hand:
-            return str("Player Hand Cards: \t"+x.asText()+"\t\t"+hand.index(x)+"\t" )
-
+        if hand.getHand() == []:
+            print("ERROR: The starting hand has not been dealt yet")
+            return "" 
+        strbuffer = ""
+        for x in hand.getHand():
+            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t\t\n" )
+        return strbuffer
 

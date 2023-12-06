@@ -13,12 +13,17 @@ model.game.start()
 
 #running state
 #notify view 
+
+turncount = 0
 while(model.game.game_state==model.game.game_states[1]):
+    turncount = turncount +1
     if input() in ["exit", "quit","break","q"]:
         break
-    #view.update("debug", "Debug message test", model.game)
-
-
+    view.update("gameInfo", "This is the " + str(turncount) + "th turn", model.game)
+    view.update("gameInfo", "There are " + str(model.game.deck.getLen()) + " Cards on the deck", model.game)
+    view.update("gameInfo", "There are " + str(len(model.game.human_player.hand.getHand())) + " Cards on your Hand", model.game)
+    view.update("printTopCard", None, model.game)
+    view.update("printHand",None,model.game)
 
 
 #moved to model
@@ -75,7 +80,8 @@ class Player:
     def pickInitialCards(self, deck):
         for i in range(0,7):
             self.pickUpACard(deck)
-
+    
+    #moved to view
     def printHand(self):
         for x in self.hand:
             print("Player Hand Cards: \t", x.asText() + "\t\t",  self.hand.index(x), "\t" )
