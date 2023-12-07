@@ -1,30 +1,51 @@
 import random
-import View.view
-import Model.model
-import Controller.controller
+import View.view as V
+import Model.model as M
+import Controller.controller as C
 
 
-console=View.view.Console()
-controller=Controller.controller.Controller()
-view=View.view.View(console)
-model=Model.model.Model(view, controller)
+console=V.Console()
+controller=C.Controller()
+view=V.View(console)
+model=M.Model(view, controller)
+deck=M.Deck()
+table_stack=M.TableStack()
 
-model.game.start()
+#TODO make Deck a sigleton
+#deck=M.Deck()
+#So that the game can be played, it is important to 
+#make make the cards appear on the table and shuffle them
+#M.Deck.generate()
+#M.Deck.shuffle()
+#TODO Make TableStack a singleton
+#table_stack=M.TableStack()
+hand1 = M.Hand()
+hand2 = M.Hand()
+human_player=M.Player(False, hand1)
+computer_player=M.Player(True, hand2)
+#human_player.hand.pickInitialCards()
+#computer_player.hand.pickInitialCards()
+#M.TableStack.placeStartingCard(M.Deck.getInstance())
+#must be standalone instance
+#model.game.start()
+#TODO Make Game a singleton
+game=M.Game(deck,human_player,computer_player,table_stack)
+game.start()
 
 #running state
 #notify view 
 
 turncount = 0
-while(model.game.game_state==model.game.game_states[1]):
+while(game.game_state==game.getGameStates()[1]):
     turncount = turncount +1
     
-    view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", model.game)
-    view.update("gameInfo", "There are " + str(model.game.deck.getLen()) + " Cards on the deck", model.game)
-    view.update("gameInfo", "There are " + str(len(model.game.human_player.hand.getHand())) + " Cards on your Hand", model.game)
-    view.update("gameInfo", "There are " + str(len(model.game.computer_player.hand.getHand())) + " Cards on the computer players Hand", model.game)
-    view.update("printTopCard", None, model.game)
-    view.update("printHand",None,model.game)
-    view.update("gameInfo", "\nPick a card!\n################################", model.game)
+    view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", game)
+    view.update("gameInfo", "There are " + str(deck.getLen()) + " Cards on the deck",game)
+    view.update("gameInfo", "There are " + str(len(human_player.hand.getCards())) + " Cards on your Hand", game)
+    view.update("gameInfo", "There are " + str(len(computer_player.hand.getCards())) + " Cards on the computer players Hand", game)
+    view.update("printTopCard", None, game)
+    view.update("printHand",None,game)
+    view.update("gameInfo", "\nPick a card!\n################################", game)
     
 
     input = controller.update(console)
@@ -33,225 +54,38 @@ while(model.game.game_state==model.game.game_states[1]):
         break
    
     try:
-        selectedCard = model.game.human_player.hand.getHand()[int(input)]
+        selectedCard = human_player.hand.getCards()[int(input)]
     except:
-        print("ERROR: The selected card can not be found.")
+        selectedCard = human_player.hand.getCards()[0]
     finally:
-        selectedCard = model.game.human_player.hand.getHand()[0]
+        print("ERROR: The selected card can not be found.")
+    
+    if selectedCard == None:
+        selectedCard=0
 
-    isMatching = model.game.checkMatchingCard(selectedCard, model.table_stack)
+
+    isMatching = game.checkMatchingCard(selectedCard, table_stack)
     
     if isMatching:
-        view.update("gameInfo","The Card is matching!", model.game)
-        model.human_player.hand.dropACard(selectedCard, model.table_stack)
+        view.update("gameInfo","The Card is matching!", game)
+        human_player.hand.dropACard(selectedCard, table_stack)
     else:
-        view.update("gameInfo","The Card is not matching!\n", model.game)
-        model.human_player.pickUpACard(model.deck)
+        view.update("gameInfo","The Card is not matching!\n", game)
+        human_player.pickUpACard(deck)
 
     
     computer_can_drop = False
-    for card in model.computer_player.hand.getHand():
-        if model.game.checkMatchingCard(card, model.table_stack):
+    for card in computer_player.hand.getCards():
+        if game.checkMatchingCard(card, table_stack):
             computer_can_drop = True
 
     if computer_can_drop:
-        model.computer_player.dropACard(card, model.table_stack)
+        computer_player.dropACard(card, table_stack)
     else:
-        model.computer_player.hand.pickUpACard(model.deck)
+        computer_player.hand.pickUpACard(deck)
     
-    if model.human_player.hand.getLen() == 0 or model.computer_player.hand.getLen() == 0:
-        model.game.gameOver()
+    if human_player.hand.getLen() == 0 or computer_player.hand.getLen() == 0:
+        game.gameOver()
 
-    if model.game.game_states==model.game.game_states[4]:
-        view.update("\n\n\ngameInfo", "GAME OVER\n", model.game)
-
-
-#moved to model
-class Card:
-    def __init__(self, color, number):
-        self.color = color
-        self.number = number
-
-    def asText(self):
-        text_number = ""
-        if self.number < 9:
-            text_number = str(self.number + 2)
-
-        elif self.number == 11:
-            text_number = "Ace"
-
-        elif self.number == 10:
-            text_number = "King"
-
-        elif self.number == 9:
-            text_number = "Queen"
-
-        elif self.number == 8:
-            text_number = "Jack"
-
-        else:
-            print("An unexpected Error occured")
-        
-        text_color = ""
-
-        if self.color == 0:
-            text_color = "Clubs"  
-        elif self.color == 1:
-            text_color = "Spades"
-        elif self.color == 2:
-            text_color = "Hearts"
-        elif self.color == 3:
-            text_color = "Diamonds"
-        else:
-            print("An unexpected Error occured")
-            
-        return text_number + " of " + text_color
-
-#moved to model
-class Player:
-    def __init__(self, computer):
-        self.computer = computer
-        self.deck = Deck()
-        self.hand = []
-
-    def pickUpACard(self, deck):
-        self.hand.append(deck.pickOneCard())
-
-    def pickInitialCards(self, deck):
-        for i in range(0,7):
-            self.pickUpACard(deck)
-    
-    #moved to view
-    def printHand(self):
-        for x in self.hand:
-            print("Player Hand Cards: \t", x.asText() + "\t\t",  self.hand.index(x), "\t" )
-
-
-class Deck:
-    def __init__(self):
-        pass
-
-    #moved to model
-    def generateDeck(self):
-        self.deck = []
-        for i in range (0,12):
-            for j in range (0,3):
-                self.deck.append(Card(j, i))
-        
-        return self.deck
-
-    #mved to view
-    def printDeck(self):
-        for x in self.deck:
-            print("Color: ",x.color,"Number: ",x.number)
-
-    #moved to model    
-    def shuffle(self):
-        random.shuffle(self.deck)
-
-    #moved to model
-    def pickOneCard(self):
-        try:
-            picked_card = self.deck.pop()
-        except:
-            print("The Deck is empty")
-            self.generateDeck()
-            picked_card = self.deck.pop()
-        finally:
-            return picked_card
-    
-    #moved to view
-    def printTopCard(self):
-        print("The top card on the deck is: \n\t\t", self.deck[len(self.deck)-1].asText() )
-
-#moved to model
-class Game:
-    def __init__(self):
-        self.game_states = ["initializing", "running", "stopped", "over", "new"]
-        self.game_state = self.game_states[0]
-        self.deck = Deck()
-        self.deck.generateDeck()
-        self.deck.shuffle()
-        self.human_player = Player(False)
-        self.human_player.pickInitialCards(self.deck)
-        self.computer_player = Player(True)
-        self.computer_player.pickInitialCards(self.deck)
-        
-        self.table_stack = []
-        self.table_stack.append(self.deck.pickOneCard())
-
-        self.newGame()
-
-    #moved to model
-    def checkMatchingCard(self, card):
-        if card.number == self.table_stack[-1].number or card.color == self.table_stack[-1].color:
-            return True
-        else:
-            return False
-    
-    #moved to model
-    def run(self):
-        self.game_state = self.game_states[1]
-        while self.game_state == "running":
-            print("The top card on the table stack is:")
-            print("\n",self.table_stack[-1].asText())
-            print()
-            self.human_player.printHand()
-            print("")
-            picked_card = input("Select a card you want to put on the open table stack..")
-            
-            
-            print()
-            print()
-            
-            try:
-                if self.checkMatchingCard(self.human_player.hand[int(picked_card)]):
-                    print("Okay, these cards do match!")
-                    print("Removing selected Card form players Hand and putting it on the table stack..\n")
-                    self.table_stack.append(self.human_player.hand.pop(int(picked_card)))
-
-                else:
-                    print("No! These cards do NOT match!")
-                    print("Select another card!! Or pass by pressing Enter")
-
-            except:
-                self.human_player.pickUpACard(self.deck) 
-
-            print("Alright, now its the computer players turn!")
-            print("###########################################")
-            
-
-
-            card_found = False
-            for x in self.computer_player.hand:
-                if self.checkMatchingCard(x):
-                    self.table_stack.append(self.computer_player.hand.pop(self.computer_player.hand.index(x)))
-                    card_found = True
-                    break
-            if not card_found:
-                self.computer_player.pickUpACard(self.deck)
-
-            print("The computer player has ",len(self.computer_player.hand), "Cards on his hand.")
-
-            print("Next turn!\n##########")
-
-            if len(self.human_player.hand) == 0 or len(self.computer_player.hand) == 0:
-                print("Okay, game is over! Well played! Good game!")
-                self.game_state = self.game_states[2]
-                self.gameOver()
-
-    #moved to model
-    def stop(self):
-        pass
-    
-    #moved to model
-    def gameOver(self):
-        print("This was a triumph, I making a note here, huge success..\n\nCredits: Tim-Ohle Schürheck\nThanks for playing!")
-
-    #moved to model
-    def newGame(self):
-        self.game_state = self.game_states[4]
-        print("New Game Has started!")
-        self.run()
-
-
+    if game.getGameStates==game.getGameStates()[4]:
+        view.update("\n\n\ngameInfo", "GAME OVER\n", game)

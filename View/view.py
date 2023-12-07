@@ -1,6 +1,5 @@
 class View:
     def __init__(self, device):
-        print("Viewport has been initialized.", "The selected device is:",type(device))
         self.device = device 
 
     def update(self,method, message, game):
@@ -47,11 +46,11 @@ class Console:
             return str("Color: "+x.color+"Number: "+x.number)
     
     def printHand(self, hand):
-        if hand.getHand() == []:
+        if hand.getCards() == []:
             print("ERROR: The starting hand has not been dealt yet")
             return "" 
         strbuffer = ""
-        for x in hand.getHand():
-            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t"+str(hand.getHand().index(x))+"\t\n" )
+        for x in hand.getCards():
+            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t"+str(hand.getCards().index(x))+"\t\n" )
         return strbuffer
 
