@@ -11,29 +11,13 @@ model=M.Model(view, controller)
 deck=M.Deck()
 table_stack=M.TableStack()
 
-#TODO make Deck a sigleton
-#deck=M.Deck()
-#So that the game can be played, it is important to 
-#make make the cards appear on the table and shuffle them
-#M.Deck.generate()
-#M.Deck.shuffle()
-#TODO Make TableStack a singleton
-#table_stack=M.TableStack()
 hand1 = M.Hand()
 hand2 = M.Hand()
 human_player=M.Player(False, hand1)
 computer_player=M.Player(True, hand2)
-#human_player.hand.pickInitialCards()
-#computer_player.hand.pickInitialCards()
-#M.TableStack.placeStartingCard(M.Deck.getInstance())
-#must be standalone instance
-#model.game.start()
-#TODO Make Game a singleton
 game=M.Game(deck,human_player,computer_player,table_stack)
 game.start()
 
-#running state
-#notify view 
 
 turncount = 0
 while(game.game_state==game.getGameStates()[1]):
