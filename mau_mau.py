@@ -10,13 +10,15 @@ view=V.View(console)
 model=M.Model(view, controller)
 deck=M.Deck()
 table_stack=M.TableStack()
+gui=V.GUI()
+gui.run()
 
 hand1 = M.Hand()
 hand2 = M.Hand()
 human_player=M.Player(False, hand1)
 computer_player=M.Player(True, hand2)
 game=M.Game(deck,human_player,computer_player,table_stack)
-game.start()
+#game.start()
 
 
 turncount = 0

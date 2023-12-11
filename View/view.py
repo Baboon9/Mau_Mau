@@ -1,9 +1,21 @@
+import tkinter as tk
+
+
 class View:
     def __init__(self, device):
         self.device = device 
 
     def update(self,method, message, game):
         self.device.render(method, message, game)
+
+class GUI:
+    _root = tk.Tk()
+    def __init__(self):
+        pass
+
+    def run(self):
+        self._root.mainloop()
+    
 
 class Console:
     
