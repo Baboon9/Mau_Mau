@@ -30,3 +30,17 @@ Third entry:
 		So what am I doing today with this repo? It is still missing an useful GUI which I have been scetching already,
 	Now it is time to get my hands dirty with some TKinter stuff, I already have a headach but still, it needs to be done.
 
+
+Forth entry:
+	I tried to build the MVC Pattern, but I got distracted and confused and now I am completly Lost.
+	My friend hasn't yet helped me with the review yet and the whole architecture is a complete mess.
+	Maybe I should just focus on implementing the GUI and later do the refactoring. That sounds resonable I should do it that way.
+		Alright.. About the GUI, There has to be 4 container, the container are called Frames and that containers are to be placed 
+	in the window. The window has attributes as well as the Labels and Buttons that are to be placed in the Windows or the Frames, as I said.
+	Later on that Labels are to be configured so that they have a more aesthetic outlook. But that is to be done when they are implemented.
+	I am about to use a Grid Layout which is provided by the Grid Layout Manager, which again has to be configured properly.
+	The Labels should represent the Cards on the Table Stack and the Deck and the Computer Players Hand. 
+	On the oder hand the human players card will be buttons, so the user can pick them and put them on the Table Stack.
+		OK That should be it for now. Time To Tinker with Tkinter.
+
+

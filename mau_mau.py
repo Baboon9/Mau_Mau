@@ -4,21 +4,28 @@ import Model.model as M
 import Controller.controller as C
 
 
+gui=V.GUI()
 console=V.Console()
 controller=C.Controller()
-view=V.View(console)
-model=M.Model(view, controller)
+model=M.Model()
+view=V.View(gui)
 deck=M.Deck()
+view.setModel(model)
+model.setView(view)
 table_stack=M.TableStack()
-gui=V.GUI()
+
+gui.setModel(model)
+gui.build_GUI()
 gui.run()
 
-hand1 = M.Hand()
-hand2 = M.Hand()
-human_player=M.Player(False, hand1)
-computer_player=M.Player(True, hand2)
-game=M.Game(deck,human_player,computer_player,table_stack)
-#game.start()
+
+
+game=model.getGame()
+
+human_player=model.getHumanPlayer()
+computer_player=model.getComputerPlayer()
+
+game.start()
 
 
 turncount = 0

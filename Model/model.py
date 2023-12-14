@@ -1,48 +1,33 @@
 import random
 
 class Model:
-    def __init__(self, view, controller):
-        self.view = view
-        self.controller = controller
-        #moved to main
-        #self.deck = Deck()
-        #self.players = []
-        #self.hands = []
-        
-        
-        #moved to main
-        #When we want to play a game of Mau Mau we have to have at least 2 players
-        #And then when the game starts they have to get their initial cards on their hands
-        #self.human_player = Player(False, Hand())
-        #moved to hand class
-        #self.human_player.pickInitialCards(self.deck)
-        #self.computer_player = Player(True, Hand())
-        #moved to hand class
-        #self.computer_player.pickInitialCards(self.deck)
-        
-        #moved to main
-        #self.human_player.hand.pickInitialCards(self.deck)
-        #self.computer_player.hand.pickInitialCards(self.deck)
 
+    def getHumanPlayer(self):
+        return self._human_player
 
-        #moved to main
-        #When the game is initialized it needs a stack of cards on the table for placing handcards
-        #This should actually be a class on its own
-        #TODO: Make this a class on its own
-        #self.table_stack = TableStack()
-        #self.table_stack.placeStartingCard(self.deck)
-        
-        #moved to main
-        #self.game = Game(self.deck, self.human_player, self.computer_player, self.table_stack)
+    def getComputerPlayer(self):
+        return self._computer_player
 
-        #needs to be invoked somewhere else!
-        #self.game.newGame()
-        
+    def setView(self, view):
+        self._view=view
+
+    def __init__(self):
+        self._table_stack=TableStack()
+        self._deck=Deck()
+        self._deck.generate()
+        self._deck.shuffle()
+        self._hand1 = Hand()
+        self._hand2 = Hand()
+        self._human_player=Player(False, self._hand1)
+        self._human_player.pickInitialCards(self._deck)
+        self._computer_player=Player(True, self._hand2)
+        self._computer_player.pickInitialCards(self._deck)
+        self._game=Game(self._deck,self._human_player,self._computer_player,self._table_stack)
+    
+    def getGame(self):
+        return self._game
 
 class TableStack:
-    _instance=None
-    def __init__(self):
-        self._instance=TableStack()
     def getLen(self):
         return len(self.cards)
     def getCards(self):
@@ -94,28 +79,17 @@ class Deck:
             return picked_card
 
 class Game:
-    _instance=None
     _game_states = ["initializing", "running", "stopped", "over", "new"]
 
     def getGameStates(self):
         return self._game_states
 
-    def getInstance(self):
-        return self._instance
-    
     def setHumanPlayer(self, player):
         self.human_player=player
 
     def setComputerPlayer(self,player):
         self.computer_player=player
    
-    def __init__(self, deck, table_stack):
-        self._instance=Game(deck, table_stack)
-        self.deck=deck
-        self.table_stack=table_stack
-        self.game_state = self._game_states[0]
-
-
     #When the game starts an instace of the game calss will be created.
     #This instace has important attributes.
     def __init__(self, deck, human_player, computer_player, table_stack):
@@ -185,6 +159,9 @@ class Player:
 
     def pickUpACard(self, deck):
         self.hand.pickUpACard(deck)
+
+    def getHand(self):
+        return self.hand
 
     def dropACard(self, card, table_stack):
         self.hand.dropACard(card, table_stack)
