@@ -15,30 +15,31 @@ model.setView(view)
 table_stack=M.TableStack()
 
 gui.setModel(model)
-gui.build_GUI()
-gui.run()
-
-
+gui.create_GUI()
 
 game=model.getGame()
+
+view.update("","",game)
+
 
 human_player=model.getHumanPlayer()
 computer_player=model.getComputerPlayer()
 
 game.start()
 
+#gui.run()
 
 turncount = 0
 while(game.game_state==game.getGameStates()[1]):
     turncount = turncount +1
     
-    view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", game)
-    view.update("gameInfo", "There are " + str(deck.getLen()) + " Cards on the deck",game)
-    view.update("gameInfo", "There are " + str(len(human_player.hand.getCards())) + " Cards on your Hand", game)
-    view.update("gameInfo", "There are " + str(len(computer_player.hand.getCards())) + " Cards on the computer players Hand", game)
-    view.update("printTopCard", None, game)
-    view.update("printHand",None,game)
-    view.update("gameInfo", "\nPick a card!\n################################", game)
+    #view.update("gameInfo", "\n#################################\nThis is the " + str(turncount) + "th turn", game)
+    #view.update("gameInfo", "There are " + str(deck.getLen()) + " Cards on the deck",game)
+    #view.update("gameInfo", "There are " + str(len(human_player.hand.getCards())) + " Cards on your Hand", game)
+    #view.update("gameInfo", "There are " + str(len(computer_player.hand.getCards())) + " Cards on the computer players Hand", game)
+    #view.update("printTopCard", None, game)
+    #view.update("printHand",None,game)
+    #view.update("gameInfo", "\nPick a card!\n################################", game)
     
 
     input = controller.update(console)

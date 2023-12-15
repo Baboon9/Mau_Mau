@@ -16,6 +16,7 @@ class Model:
         self._deck=Deck()
         self._deck.generate()
         self._deck.shuffle()
+        self._table_stack.placeStartingCard(self._deck)
         self._hand1 = Hand()
         self._hand2 = Hand()
         self._human_player=Player(False, self._hand1)
@@ -80,6 +81,12 @@ class Deck:
 
 class Game:
     _game_states = ["initializing", "running", "stopped", "over", "new"]
+    
+    def getTableStack(self):
+        return self.table_stack
+
+    def getHumanPlayer(self):
+        return self.human_player
 
     def getGameStates(self):
         return self._game_states
@@ -167,6 +174,39 @@ class Player:
         self.hand.dropACard(card, table_stack)
 
 class Card:
+    def getNumber(self):
+        text_number = ""
+        if self.number < 9:
+            text_number = str(self.number + 2)
+
+        elif self.number == 11:
+            text_number = "Ace"
+
+        elif self.number == 10:
+            text_number = "King"
+
+        elif self.number == 9:
+            text_number = "Queen"
+
+        elif self.number == 8:
+            text_number = "Jack"
+        return text_number
+
+    def getColor(self):
+        text_color = ""
+
+        if self.color == 0:
+            text_color = "Clubs"  
+        elif self.color == 1:
+            text_color = "Spades"
+        elif self.color == 2:
+            text_color = "Hearts"
+        elif self.color == 3:
+            text_color = "Diamonds"
+        else:
+            print("An unexpected Error occured")
+        return text_color 
+
     def __init__(self, color, number):
         self.color = color
         self.number = number

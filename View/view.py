@@ -3,8 +3,6 @@ from tkinter import ttk
 import sys
 
 class View:
-    _device = None
-    _model = None
     def setModel(self, model):
         self.model = model
 
@@ -12,7 +10,8 @@ class View:
         self._device = device 
 
     def update(self,method, message, game):
-        self._device.render(method, message, game)
+        self._device.update_interface(game)
+        #self._device.render(method, message, game)
 
 class GUI(tk.Tk):
    
@@ -30,35 +29,70 @@ class GUI(tk.Tk):
         self.title="MauMau"
         self.geometry("860x600+100+100")
         self.resizable(False, False)
-        self.configure(background="#000")
+        self.configure(background="#333")
         self.bind('<Escape>', self.close)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
 
     def __init__(self):
         super().__init__()
         self.config()
+        self.create_layout()
+        #self.create_GUI()
+
+    def update_interface(self, game):
+        table_stack = game.getTableStack()
+        
+        self.lbl_table_stack.configure(text='Color:\n  ' + table_stack.getCards()[-1].getColor()+'\nNumber:\n  ' + table_stack.getCards()[-1].getNumber())
+
+        player_cards = game.getHumanPlayer().getHand().getCards()
+        for i in range(len(player_cards)):
+            self._btn_human_hand[i].configure(text='Color:\n  '+player_cards[i].getColor()+'\nNumber:\n  '+player_cards[i].getNumber(), background='#fff')
+
+            
 
     def render(self):
         pass
 
-    def build_GUI(self):
+    def create_layout(self):
+        self.top_frame=tk.Frame(self)
+        self.middle_frame=tk.Frame(self)
+        self.bottom_frame=tk.Frame(self)
+        self.top_frame.configure(borderwidth=5,relief='solid', height=200, width=860, bg='#222' )
+        self.middle_frame.configure(borderwidth=5, height=200, width=860,bg='#333')
+        self.bottom_frame.configure(borderwidth=5,relief='solid', height=200, width=860, bg='#444') 
+        self.top_frame.grid(row=0, column=0, sticky='EW')
+        self.middle_frame.grid(row=1, column=0, sticky='EW')
+        self.bottom_frame.grid(row=2, column=0, sticky='EW') 
+    
+    def create_card(self, frame):
+        card = ttk.Label(frame, text="COLOR: \nXXXXXXX\nNUMBER: \nXXXXXXX", background='#aaa', padding=(10,10,10,140), relief='solid', font='courir')
+        return card
+
+
+    def create_GUI(self):
 
         self.width=860
         self.height=600
         self.card_height=200
-
-        self.lbl_deck=ttk.Label(self, text="?", padding=(10,10,self.card_height/2-3,150), background='#ff2')
-        self.lbl_deck.grid( column=0,row=1, padx=3, pady=3)
-
-        self.lbl_table_stack=ttk.Label(self, text="to set", padding=(10,10,self.card_height/2-23,150))
-        self.lbl_table_stack.grid( column=1,row=1, padx=3, pady=3)
-
+        
+        card_properties=None
+        
+        self.lbl_deck=self.create_card(self.middle_frame)
+        self.lbl_deck.grid(row=0, column=0, padx=3, pady=3)
+        self.lbl_deck.configure(text='??????\n\n\n', background='#faf')
+        self.lbl_table_stack=self.create_card(self.middle_frame)
+        self.lbl_table_stack.grid(row=0, column=1, padx=3, pady=3)
+        self.lbl_table_stack.configure(background='#eff')
         self.lbl_computerHand=[]
 
         self._lbl_comp_hand=[]
 
         comp_cards = self.model.getComputerPlayer().getHand().getCards()
         for card in comp_cards: 
-            label = ttk.Label(self, text="X",padding=(10, 10, self.card_height/2-3, 150))
+            label = self.create_card(self.top_frame) 
+            label.configure(text='XXXXX\n\n\n')
             self._lbl_comp_hand.append(label)
         
         for lbl in self._lbl_comp_hand:
@@ -69,7 +103,7 @@ class GUI(tk.Tk):
         player_cards = self.model.getHumanPlayer().getHand().getCards()
         
         for card in player_cards:
-            button = ttk.Button(self, text="???", padding=(10,10,self.card_height/2-3,150))  
+            button = self.create_card(self.bottom_frame) 
             self._btn_human_hand.append(button)
 
         for btn in self._btn_human_hand:
