@@ -2,41 +2,38 @@ import random
 
 class Model:
 
-    def getHumanPlayer(self):
+    def get_humanPlayer(self):
         return self._human_player
 
-    def getComputerPlayer(self):
+    def get_computerPlayer(self):
         return self._computer_player
-
-    def setView(self, view):
-        self._view=view
 
     def __init__(self):
         self._table_stack=TableStack()
         self._deck=Deck()
         self._deck.generate()
         self._deck.shuffle()
-        self._table_stack.placeStartingCard(self._deck)
+        self._table_stack.place_startingCard(self._deck)
         self._hand1 = Hand()
         self._hand2 = Hand()
         self._human_player=Player(False, self._hand1)
-        self._human_player.pickInitialCards(self._deck)
+        self._human_player.pick_initialCards(self._deck)
         self._computer_player=Player(True, self._hand2)
-        self._computer_player.pickInitialCards(self._deck)
+        self._computer_player.pick_initialCards(self._deck)
         self._game=Game(self._deck,self._human_player,self._computer_player,self._table_stack)
     
-    def getGame(self):
+    def get_game(self):
         return self._game
 
 class TableStack:
-    def getLen(self):
+    def get_len(self):
         return len(self.cards)
-    def getCards(self):
+    def get_cards(self):
         return self.cards
     def __init__(self):
         self.cards = []
-    def placeStartingCard(self, deck):
-        self.cards.append(deck.pickUpACard())
+    def place_startingCard(self, deck):
+        self.cards.append(deck.pick_card())
 
 class Deck:
     _instance=None
@@ -46,13 +43,13 @@ class Deck:
         self.generate()
         self.shuffle()
 
-    def getInstance(self):
+    def get_instance(self):
         return self._instance
 
-    def getDeck(self):
+    def get_deck(self):
         return self._deck
 
-    def getLen(self):
+    def get_len(self):
         return len(self._deck)
 
     #So that the game can be played it has to have a deck of cards which are to use
@@ -70,7 +67,7 @@ class Deck:
         random.shuffle(self._deck)
 
     #When the player is lacking the posiblity to play a card, he has to pick another one from the stack on the table
-    def pickUpACard(self):
+    def pick_card(self):
         try:
             picked_card = self._deck.pop()
         except:
@@ -82,19 +79,19 @@ class Deck:
 class Game:
     _game_states = ["initializing", "running", "stopped", "over", "new"]
     
-    def getTableStack(self):
+    def get_tableStack(self):
         return self.table_stack
 
-    def getHumanPlayer(self):
+    def get_humanPlayer(self):
         return self.human_player
 
-    def getGameStates(self):
+    def get_gameStates(self):
         return self._game_states
 
-    def setHumanPlayer(self, player):
+    def set_humanPlayer(self, player):
         self.human_player=player
 
-    def setComputerPlayer(self,player):
+    def set_computerPlayer(self,player):
         self.computer_player=player
    
     #When the game starts an instace of the game calss will be created.
@@ -108,17 +105,17 @@ class Game:
 
     #When the game is running and the turn has begun there has to be cards compared 
     #No card can be placed on the stack that does not match at least the color or the number of that given card
-    def checkMatchingCard(self, card, table_stack):
-        if card.number == table_stack.getCards()[-1].number or card.color == table_stack.getCards()[-1].color:
+    def check_matchingCard(self, card, table_stack):
+        if card.number == table_stack.get_cards()[-1].number or card.color == table_stack.get_cards()[-1].color:
             return True
         else:
             return False
     
     def start(self):
         self.game_state=self._game_states[1]
-        self.human_player.pickInitialCards(self.deck)
-        self.computer_player.pickInitialCards(self.deck)
-        self.table_stack.placeStartingCard(self.deck)
+        self.human_player.pick_initialCards(self.deck)
+        self.computer_player.pick_initialCards(self.deck)
+        self.table_stack.place_startingCard(self.deck)
 
     def stop(self):
         pass
@@ -137,44 +134,44 @@ class Hand:
     def __init__(self):
         self.cards = []
 
-    def getLen(self):
+    def get_len(self):
         return len(self.cards)
 
-    def getCards(self):
+    def get_cards(self):
         return self.cards
 
-    def pickInitialCards(self, deck):
+    def pick_initialCards(self, deck):
         for i in range(0,7):
-            self.pickUpACard(deck)
+            self.pick_card(deck)
 
-    def dropACard(self, card, table_stack):
+    def drop_card(self, card, table_stack):
         dropped_card = card 
         dropped_card_index = self.cards.index(dropped_card)
         self.cards.pop(dropped_card_index)
-        table_stack.getCards().append(dropped_card)
+        table_stack.get_cards().append(dropped_card)
 
-    def pickUpACard(self, deck):
-        self.cards.append(deck.pickUpACard())
+    def pick_card(self, deck):
+        self.cards.append(deck.pick_card())
 
 class Player:
     def __init__(self, computer, hand):
         self.computer = computer
         #self.deck = Deck()
         self.hand = hand
-    def pickInitialCards(self,deck):
-        self.hand.pickInitialCards(deck)
+    def pick_initialCards(self,deck):
+        self.hand.pick_initialCards(deck)
 
-    def pickUpACard(self, deck):
-        self.hand.pickUpACard(deck)
+    def pick_card(self, deck):
+        self.hand.pick_card(deck)
 
-    def getHand(self):
+    def get_hand(self):
         return self.hand
 
-    def dropACard(self, card, table_stack):
-        self.hand.dropACard(card, table_stack)
+    def drop_card(self, card, table_stack):
+        self.hand.drop_card(card, table_stack)
 
 class Card:
-    def getNumber(self):
+    def get_number(self):
         text_number = ""
         if self.number < 9:
             text_number = str(self.number + 2)
@@ -192,7 +189,7 @@ class Card:
             text_number = "Jack"
         return text_number
 
-    def getColor(self):
+    def get_color(self):
         text_color = ""
 
         if self.color == 0:

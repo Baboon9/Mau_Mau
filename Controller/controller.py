@@ -1,9 +1,11 @@
 import View.view 
 
 class Controller:
-    def __init__(self):
-        pass
+    def __init__(self, model, view):
+        self.model = model
+        self.view = view
 
-    def update(self, device):
-        if type(device) == View.view.Console:
-            return str(input())
+    def read_input(self):
+        pass
+    
+    

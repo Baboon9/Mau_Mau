@@ -3,18 +3,9 @@ from tkinter import ttk
 import sys
 
 class View:
-    def setModel(self, model):
-        self.model = model
-
-    def __init__(self, device):
-        self._device = device 
-
-    def update(self,method, message, game):
-        self._device.update_interface(game)
-        #self._device.render(method, message, game)
+    pass
 
 class GUI(tk.Tk):
-   
     def close(self, event):
         self.withdraw()
         sys.exit()

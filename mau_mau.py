@@ -6,28 +6,25 @@ import Controller.controller as C
 
 gui=V.GUI()
 console=V.Console()
-controller=C.Controller()
-model=M.Model()
-view=V.View(gui)
-deck=M.Deck()
-view.setModel(model)
-model.setView(view)
-table_stack=M.TableStack()
 
-gui.setModel(model)
-gui.create_GUI()
+model=M.Model()
+view=V.View()
+controller=C.Controller(model, view)
+
+deck=M.Deck()
+table_stack=M.TableStack()
 
 game=model.getGame()
 
-view.update("","",game)
+gui.update_interface(game)
+gui.run()
+
 
 
 human_player=model.getHumanPlayer()
 computer_player=model.getComputerPlayer()
 
 game.start()
-
-#gui.run()
 
 turncount = 0
 while(game.game_state==game.getGameStates()[1]):
@@ -41,8 +38,8 @@ while(game.game_state==game.getGameStates()[1]):
     #view.update("printHand",None,game)
     #view.update("gameInfo", "\nPick a card!\n################################", game)
     
-
-    input = controller.update(console)
+    """
+    input = controller.read_input()
 
     if input in ["exit", "quit","break","q"]:
         break
@@ -83,3 +80,5 @@ while(game.game_state==game.getGameStates()[1]):
 
     if game.getGameStates==game.getGameStates()[4]:
         view.update("\n\n\ngameInfo", "GAME OVER\n", game)
+
+    """
