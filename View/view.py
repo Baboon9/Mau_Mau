@@ -23,7 +23,7 @@ class GUI(tk.Tk):
 
     def config(self):
         self.title="MauMau"
-        self.geometry("860x600+100+100")
+        self.geometry("1200x600+100+100")
         self.resizable(False, False)
         self.configure(background="#333")
         self.bind('<Escape>', self.close)
@@ -34,9 +34,6 @@ class GUI(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        #self.config()
-        #self.create_layout()
-        #self.create_GUI()
 
     def update_interface(self, game):
         table_stack = game.getTableStack()
@@ -52,21 +49,6 @@ class GUI(tk.Tk):
     def render(self):
         pass
     
-    def create_middleFrame(self):
-        frame = tk.Frame()
-
-        return frame
-
-    def create_bottomFrame(self):
-        frame = tk.Frame()
-
-        return frame
-
-    def create_topFrame(self):
-        frame = tk.Frame()
-
-        return frame
-
     def create_layout(self):
         self.top_frame=tk.Frame(self)
         self.middle_frame=tk.Frame(self)
@@ -79,7 +61,7 @@ class GUI(tk.Tk):
         self.bottom_frame.grid(row=2, column=0, sticky='NSEW') 
     
     def create_card(self, frame):
-        card = ttk.Label(frame, text="COLOR: \nXXXXXXX\nNUMBER: \nXXXXXXX", background='#aaa', padding=(10,10,10,140), relief='solid', font='courir')
+        card = ttk.Label(frame, text="COLOR: \nXXXXXXX\nNUMBER: \nXXXXXXX", background='#aaa', padding=(10,10,10,140), relief='solid', font=('courir',8), width=10)
         return card
 
 
