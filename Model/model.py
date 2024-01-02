@@ -1,4 +1,33 @@
 import random
+import abc 
+
+class GameInterface(object):
+    __metaclass__=abc.ABCMeta
+    _game_states=["initialization",
+                  "setup",
+                  "stopped",
+                  "started",
+                  "stopped",
+                  "over",
+                  "new"]
+
+    def setup(self):
+        return 
+
+    def start(self):
+        return
+    
+    def stop(self):
+        return
+
+    def over(self):
+        return
+
+    def initialize(self):
+        return
+
+    def new(self):
+        return 
 
 class Model:
 
@@ -76,8 +105,7 @@ class Deck:
         finally:
             return picked_card
 
-class Game:
-    _game_states = ["initializing", "running", "stopped", "over", "new"]
+class Game(GameInterface):
     
     def get_tableStack(self):
         return self.table_stack
@@ -116,9 +144,6 @@ class Game:
         self.human_player.pick_initialCards(self.deck)
         self.computer_player.pick_initialCards(self.deck)
         self.table_stack.place_startingCard(self.deck)
-
-    def stop(self):
-        pass
     
     #end the game and show credits
     def gameOver(self):

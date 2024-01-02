@@ -3,15 +3,20 @@ from tkinter import ttk
 import sys
 
 class View:
-    pass
+    def __init__(self, mode):
+        if mode == "GUI":
+            self._GUI=GUI()
+
+    def get_GUI(self):
+        if self._GUI is not None:
+            return self._GUI
+        else:
+            raise MemoryError('GUI not loaded!')
 
 class GUI(tk.Tk):
     def close(self, event):
         self.withdraw()
         sys.exit()
-
-    def setModel(self,model):
-        self.model=model
 
     def run(self):
         self.mainloop()
@@ -25,19 +30,20 @@ class GUI(tk.Tk):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
+        self.columnconfigure(0, weight=1)
 
     def __init__(self):
         super().__init__()
-        self.config()
-        self.create_layout()
+        #self.config()
+        #self.create_layout()
         #self.create_GUI()
 
     def update_interface(self, game):
         table_stack = game.getTableStack()
         
-        self.lbl_table_stack.configure(text='Color:\n  ' + table_stack.getCards()[-1].getColor()+'\nNumber:\n  ' + table_stack.getCards()[-1].getNumber())
+        self.lbl_table_stack.configure(text='Color:\n  ' + table_stack.get_cards()[-1].getColor()+'\nNumber:\n  ' + table_stack.get_cards()[-1].getNumber())
 
-        player_cards = game.getHumanPlayer().getHand().getCards()
+        player_cards = game.get_humanPlayer().get_hand().get_cards()
         for i in range(len(player_cards)):
             self._btn_human_hand[i].configure(text='Color:\n  '+player_cards[i].getColor()+'\nNumber:\n  '+player_cards[i].getNumber(), background='#fff')
 
@@ -45,6 +51,21 @@ class GUI(tk.Tk):
 
     def render(self):
         pass
+    
+    def create_middleFrame(self):
+        frame = tk.Frame()
+
+        return frame
+
+    def create_bottomFrame(self):
+        frame = tk.Frame()
+
+        return frame
+
+    def create_topFrame(self):
+        frame = tk.Frame()
+
+        return frame
 
     def create_layout(self):
         self.top_frame=tk.Frame(self)
@@ -53,16 +74,16 @@ class GUI(tk.Tk):
         self.top_frame.configure(borderwidth=5,relief='solid', height=200, width=860, bg='#222' )
         self.middle_frame.configure(borderwidth=5, height=200, width=860,bg='#333')
         self.bottom_frame.configure(borderwidth=5,relief='solid', height=200, width=860, bg='#444') 
-        self.top_frame.grid(row=0, column=0, sticky='EW')
-        self.middle_frame.grid(row=1, column=0, sticky='EW')
-        self.bottom_frame.grid(row=2, column=0, sticky='EW') 
+        self.top_frame.grid(row=0, column=0, sticky='NSEW')
+        self.middle_frame.grid(row=1, column=0, sticky='NSEW')
+        self.bottom_frame.grid(row=2, column=0, sticky='NSEW') 
     
     def create_card(self, frame):
         card = ttk.Label(frame, text="COLOR: \nXXXXXXX\nNUMBER: \nXXXXXXX", background='#aaa', padding=(10,10,10,140), relief='solid', font='courir')
         return card
 
 
-    def create_GUI(self):
+    def create_GUI(self,model):
 
         self.width=860
         self.height=600
@@ -80,7 +101,7 @@ class GUI(tk.Tk):
 
         self._lbl_comp_hand=[]
 
-        comp_cards = self.model.getComputerPlayer().getHand().getCards()
+        comp_cards = model.get_computerPlayer().get_hand().get_cards()
         for card in comp_cards: 
             label = self.create_card(self.top_frame) 
             label.configure(text='XXXXX\n\n\n')
@@ -91,7 +112,7 @@ class GUI(tk.Tk):
   
 
         self._btn_human_hand=[]
-        player_cards = self.model.getHumanPlayer().getHand().getCards()
+        player_cards = model.get_humanPlayer().get_hand().get_cards()
         
         for card in player_cards:
             button = self.create_card(self.bottom_frame) 
@@ -134,7 +155,7 @@ class Console:
         return message
 
     def printTopCard(self, table_stack):
-        return str("The top card on the table is: \n\t\t"+table_stack.getCards()[table_stack.getLen()-1].asText() )
+        return str("The top card on the table is: \n\t\t"+table_stack.get_cards()[table_stack.getLen()-1].asText() )
 
 
     def printDeck(self, deck):
@@ -142,11 +163,11 @@ class Console:
             return str("Color: "+x.color+"Number: "+x.number)
     
     def printHand(self, hand):
-        if hand.getCards() == []:
+        if hand.get_cards() == []:
             print("ERROR: The starting hand has not been dealt yet")
             return "" 
         strbuffer = ""
-        for x in hand.getCards():
-            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t"+str(hand.getCards().index(x))+"\t\n" )
+        for x in hand.get_cards():
+            strbuffer = strbuffer + str("Player Hand Cards: \t"+x.asText()+"\t\t"+str(hand.get_cards().index(x))+"\t\n" )
         return strbuffer
 
