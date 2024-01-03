@@ -40,6 +40,9 @@ class Model:
     def get_deck(self):
         return self._deck
 
+    def get_tableStack(self):
+        return self._table_stack
+
     def __init__(self):
         self._table_stack=TableStack()
         self._deck=Deck()
@@ -124,6 +127,9 @@ class Game(GameInterface):
 
     def set_computerPlayer(self,player):
         self.computer_player=player
+
+    def get_computerPlayer(self):
+        return self.computer_player
    
     #When the game starts an instace of the game calss will be created.
     #This instace has important attributes.
