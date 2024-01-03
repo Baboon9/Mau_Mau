@@ -37,6 +37,9 @@ class Model:
     def get_computerPlayer(self):
         return self._computer_player
 
+    def get_deck(self):
+        return self._deck
+
     def __init__(self):
         self._table_stack=TableStack()
         self._deck=Deck()

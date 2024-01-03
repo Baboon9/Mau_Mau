@@ -35,14 +35,19 @@ class GUI(tk.Tk):
     def __init__(self):
         super().__init__()
 
-    def update_interface(self, game):
-        table_stack = game.getTableStack()
+    def update_interface(self, game, model):
+        table_stack = game.get_tableStack()
         
-        self.lbl_table_stack.configure(text='Color:\n  ' + table_stack.get_cards()[-1].getColor()+'\nNumber:\n  ' + table_stack.get_cards()[-1].getNumber())
+        self.lbl_table_stack.configure(text='Color:\n  ' + table_stack.get_cards()[-1].get_color()+'\nNumber:\n  ' + table_stack.get_cards()[-1].get_number())
+        
+        self.delete_computerHand()
+        self.delete_humanHand()
+        self.create_computerHand(model)
+        self.create_humanHand(model)
 
         player_cards = game.get_humanPlayer().get_hand().get_cards()
         for i in range(len(player_cards)):
-            self._btn_human_hand[i].configure(text='Color:\n  '+player_cards[i].getColor()+'\nNumber:\n  '+player_cards[i].getNumber(), background='#fff')
+            self._btn_human_hand[i].configure(text='Color:\n  '+player_cards[i].get_color()+'\nNumber:\n  '+player_cards[i].get_number(), background='#fff')
 
             
 
@@ -64,6 +69,8 @@ class GUI(tk.Tk):
         card = ttk.Label(frame, text="COLOR: \nXXXXXXX\nNUMBER: \nXXXXXXX", background='#aaa', padding=(10,10,10,140), relief='solid', font=('courir',8), width=10)
         return card
 
+    def get_lbl_deck(self):
+        return self.lbl_deck
 
     def create_GUI(self,model):
 
@@ -82,18 +89,17 @@ class GUI(tk.Tk):
         self.lbl_computerHand=[]
 
         self._lbl_comp_hand=[]
-
-        comp_cards = model.get_computerPlayer().get_hand().get_cards()
-        for card in comp_cards: 
-            label = self.create_card(self.top_frame) 
-            label.configure(text='XXXXX\n\n\n')
-            self._lbl_comp_hand.append(label)
         
-        for lbl in self._lbl_comp_hand:
-            lbl.grid(row=0, column=self._lbl_comp_hand.index(lbl), padx=3, pady=3)
-  
+        self.create_computerHand(model)
 
         self._btn_human_hand=[]
+        
+        self.create_humanHand(model)
+    
+    def get_lbl_humanHand(self):
+        return self._btn_human_hand
+
+    def create_humanHand(self, model):
         player_cards = model.get_humanPlayer().get_hand().get_cards()
         
         for card in player_cards:
@@ -102,7 +108,27 @@ class GUI(tk.Tk):
 
         for btn in self._btn_human_hand:
             btn.grid(row=2, column=self._btn_human_hand.index(btn), padx=3, pady=3)
+    
+    def delete_humanHand(self):
+        for card in self._btn_human_hand:
+            card.destroy()
+        self._btn_human_hand = []
+    
+    def delete_computerHand(self):
+        for card in self._lbl_comp_hand:
+            card.destroy()
+        self._lbl_comp_hand = []
+
+    def create_computerHand(self, model):
+        comp_cards = model.get_computerPlayer().get_hand().get_cards()
+        for card in comp_cards: 
+            label = self.create_card(self.top_frame) 
+            label.configure(text='XXXXX\n\n\n')
+            self._lbl_comp_hand.append(label)
         
+        for lbl in self._lbl_comp_hand:
+            lbl.grid(row=0, column=self._lbl_comp_hand.index(lbl), padx=3, pady=3)
+
 
 class Console:
     

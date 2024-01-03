@@ -13,6 +13,9 @@ controller=C.Controller(model, view)
 controller.config_GUI()
 controller.create_GUIlayout()
 controller.create_GUI()
+controller.update_GUI()
+controller.bind_tableStack()
+controller.bind_humanPlayerCards()
 controller.run_GUI()
 
 """
