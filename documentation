@@ -43,4 +43,10 @@ Forth entry:
 	On the oder hand the human players card will be buttons, so the user can pick them and put them on the Table Stack.
 		OK That should be it for now. Time To Tinker with Tkinter.
 
-
+Fifth entry:
+	The visual representation of the GUI Interface stands but it is not interactive yet.
+	Plus the console interface and the game algorithms are completly fucked.
+	I need to write a useful Interface Class that will help to integrate both the GUI and the Text Input thing. I don't have a clue how though.
+	There are lots of functions that don't do anything and are useless because of that. 
+	I don't think that I will be able to make a modular app that can use both console and GUI because it is just behaves so completly different from
+	each other, so I will just make a the GUI run for now.

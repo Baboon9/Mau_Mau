@@ -19,3 +19,6 @@ class Controller:
 
     def create_GUIlayout(self):
         self.view.get_GUI().create_layout()
+
+    def clicked_card(self, card):
+        print(card)
